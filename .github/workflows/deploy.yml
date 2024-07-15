@@ -1,0 +1,57 @@
+name: Deploy Rust Lambda Function
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update 
+          sudo apt-get install -y musl-tools
+
+      - name: Build Rust project for AWS Lambda
+        run: |
+          rustup target add x86_64-unknown-linux-musl
+          cargo build --release --target x86_64-unknown-linux-musl
+          mkdir -p target/lambda/books-api-lambda-rust-based
+          cp target/x86_64-unknown-linux-musl/release/your-rust-binary-name target/lambda/books-api-lambda-rust-based/bootstrap
+        env:
+          CARGO_NET_GIT_FETCH_WITH_CLI: 1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          role-session-name: DeployLambda
+          aws-region: eu-north-1
+
+      - name: Install CDK
+        run: |
+          npm install -g typescript
+          npm install -g ts-node
+          sudo npm install -g aws-cdk
+
+      - name: CDK Deploy
+        run: |
+          cd deploy
+          yarn install
+          yarn build
+          yarn cdk deploy --parameters LambdaArchitecture=arm64 --require-approval never
