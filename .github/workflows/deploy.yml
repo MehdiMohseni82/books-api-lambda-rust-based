@@ -35,8 +35,11 @@ jobs:
           sudo wget https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.184+bf588f67d.tar.xz
           echo "1"
           sudo tar -xf zig-linux-x86_64-0.14.0-dev.184+bf588f67d.tar.xz
+          ls
           echo "2"
           sudo sudo mv zig-linux-x86_64-0.14.0-dev.184+bf588f67d /usr/local/zig
+          cd /usr/local/zig
+          ls
           echo "3"
           echo 'export PATH=$PATH:/usr/local/zig' >> ~/.bashrc
           echo "4"
