@@ -27,28 +27,33 @@ jobs:
           sudo apt-get update 
           sudo apt-get install -y build-essential
           sudo curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh -s -- -y
+          wget https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.184+bf588f67d.tar.xz
+          tar -xf zig-linux-x86_64-0.14.0-dev.184+bf588f67d.tar.xz
+          sudo mv zig-linux-x86_64-0.14.0-dev.184+bf588f67d /usr/local/zig
+          echo 'export PATH=$PATH:/usr/local/zig' >> ~/.bashrc
+          source ~/.bashrc
+          cargo install -y cargo-lambda
 
+      # - name: Build Rust project for AWS Lambda
+      #   run: |
+      #     cargo lambda build --release --target x86_64-unknown-linux-musl
 
-      - name: Build Rust project for AWS Lambda
-        run: |
-          cargo lambda build --release --target x86_64-unknown-linux-musl
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+      #     role-session-name: DeployLambda
+      #     aws-region: eu-north-1
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-          role-session-name: DeployLambda
-          aws-region: eu-north-1
+      # - name: Install CDK
+      #   run: |
+      #     npm install -g typescript
+      #     npm install -g ts-node
+      #     sudo npm install -g aws-cdk
 
-      - name: Install CDK
-        run: |
-          npm install -g typescript
-          npm install -g ts-node
-          sudo npm install -g aws-cdk
-
-      - name: CDK Deploy
-        run: |
-          cd deploy
-          yarn install
-          yarn build
-          yarn cdk deploy --parameters LambdaArchitecture=arm64 --require-approval never
+      # - name: CDK Deploy
+      #   run: |
+      #     cd deploy
+      #     yarn install
+      #     yarn build
+      #     yarn cdk deploy --parameters LambdaArchitecture=arm64 --require-approval never
