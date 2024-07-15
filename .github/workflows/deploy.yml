@@ -46,24 +46,23 @@ jobs:
 
       - name: Verify Zig Installation
         run: cargo lambda build --release --target x86_64-unknown-linux-musl   
-        #    cargo lambda build --release --target x86_64-unknown-linux-musl
 
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
-      #     role-session-name: DeployLambda
-      #     aws-region: eu-north-1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          role-session-name: DeployLambda
+          aws-region: eu-north-1
 
-      # - name: Install CDK
-      #   run: |
-      #     npm install -g typescript
-      #     npm install -g ts-node
-      #     sudo npm install -g aws-cdk
+      - name: Install CDK
+        run: |
+          npm install -g typescript
+          npm install -g ts-node
+          sudo npm install -g aws-cdk
 
-      # - name: CDK Deploy
-      #   run: |
-      #     cd deploy
-      #     yarn install
-      #     yarn build
-      #     yarn cdk deploy --parameters LambdaArchitecture=arm64 --require-approval never
+      - name: CDK Deploy
+        run: |
+          cd deploy
+          yarn install
+          yarn build
+          yarn cdk deploy --parameters LambdaArchitecture=arm64 --require-approval never
