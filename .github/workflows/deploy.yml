@@ -32,11 +32,12 @@ jobs:
           sudo sudo mv zig-linux-x86_64-0.14.0-dev.184+bf588f67d /usr/local/zig
           echo 'export PATH=$PATH:/usr/local/zig' >> ~/.bashrc
           source ~/.bashrc
-          cargo install cargo-lambda
+      #    cargo install cargo-lambda
 
       - name: Build Rust project for AWS Lambda
         run: |
-          cargo lambda build --release --target x86_64-unknown-linux-musl
+          zig version
+      #    cargo lambda build --release --target x86_64-unknown-linux-musl
 
       # - name: Configure AWS Credentials
       #   uses: aws-actions/configure-aws-credentials@v4
