@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update 
           sudo apt-get install -y build-essential
-          sudo curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | shupda -y
+          sudo curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh -y
 
 
       # - name: Build Rust project for AWS Lambda
