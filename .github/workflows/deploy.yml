@@ -27,12 +27,7 @@ jobs:
           sudo apt-get update 
           sudo apt-get install -y build-essential
           sudo curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-          wget https://ziglang.org/builds/zig-linux-x86_64-0.14.0-dev.184+bf588f67d.tar.xz
-          tar -xf zig-linux-x86_64-0.14.0-dev.184+bf588f67d.tar.xz
-          sudo mv zig-linux-x86_64-0.14.0-dev.184+bf588f67d /usr/local/zig
-          echo 'export PATH=$PATH:/usr/local/zig' >> ~/.bashrc
-          source ~/.bashrc
-          cargo install -y cargo-lambda
+
 
       - name: Build Rust project for AWS Lambda
         run: |
