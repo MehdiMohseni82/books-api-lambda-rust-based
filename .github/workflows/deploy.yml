@@ -34,10 +34,9 @@ jobs:
           source ~/.bashrc
           cargo install cargo-lambda
 
-
-      # - name: Build Rust project for AWS Lambda
-      #   run: |
-      #     cargo lambda build --release --target x86_64-unknown-linux-musl
+      - name: Build Rust project for AWS Lambda
+        run: |
+          cargo lambda build --release --target x86_64-unknown-linux-musl
 
       # - name: Configure AWS Credentials
       #   uses: aws-actions/configure-aws-credentials@v4
