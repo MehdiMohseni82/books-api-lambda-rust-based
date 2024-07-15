@@ -1,4 +1,4 @@
-name: Deploy Rust Lambda Function
+name: Deploy
 
 on:
   workflow_dispatch:
@@ -14,13 +14,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-
-      # - name: Setup Rust
-      #   uses: actions-rs/toolchain@v1
-      #   with:
-      #     toolchain: stable
-      #     profile: minimal
-      #     override: true
 
       - name: Install build dependencies
         run: |
@@ -44,7 +37,7 @@ jobs:
       - name: Verify Zig Installation
         run: cargo install cargo-lambda
 
-      - name: Verify Zig Installation
+      - name: Build RUST
         run: cargo lambda build --release --target x86_64-unknown-linux-musl   
 
       - name: Configure AWS Credentials
@@ -65,4 +58,4 @@ jobs:
           cd deploy
           yarn install
           yarn build
-          yarn cdk deploy --parameters LambdaArchitecture=arm64 --require-approval never
+          yarn cdk deploy --require-approval never
